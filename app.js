@@ -1,6 +1,7 @@
 console.log('Hello world');
 
 var express = require('express');
+var mysql = require('./dbcon.js');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -8,12 +9,12 @@ var bodyParser = require('body-parser');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('port', 8125);
+app.set('port', process.argv[2]);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/',function(req,res){
-  res.render('home.handlebars') //We can omit the .handlebars extension as we do below
+  res.render('home');
 });
 
 app.get('/results',function(req,res){
@@ -28,13 +29,14 @@ app.get('/results',function(req,res){
 app.post('/results',function(req,res){
   var dataSet = {'method': 'POST'};
   dataSet.data = [];
-  for (var q in req.body) {
-    dataSet.data.push({ 'name': q, 'value': req.body[q] });
+  for (var q in req.query) {
+    dataSet.data.push({ 'name': q, 'value': req.query[q] });
   }
-  console.log(req.body);
 
   dataSet.received = [];
-  console.log(req.body);
+  for (var q in req.body) {
+    dataSet.received.push({ 'name': q, 'value': req.body[q] });
+  }
   res.render('results', dataSet);
 });
 

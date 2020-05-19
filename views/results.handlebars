@@ -1,10 +1,11 @@
 <h1>{{method}} Request Received</h1>
 
+{{#if data}}
 <table>
   <thead>
     <tr>
-      <th>Parameter</th>
-      <th>Value</th>
+      <th>Query Param</th>
+      <th>Query Value</th>
     </tr>
   </thead>
   <tbody>
@@ -16,3 +17,23 @@
     {{/each}}
   </tbody>
 </table>
+{{/if}}
+
+{{#if received}}
+<table>
+  <thead>
+    <tr>
+      <th>Body Param</th>
+      <th>Body Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each received}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.value}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{/if}}
